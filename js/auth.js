@@ -25,9 +25,9 @@ document.getElementById("formLogin").addEventListener("submit", async function (
     sessionStorage.setItem("usuario", JSON.stringify(datos));
     sessionStorage.setItem("loginTime", Date.now().toString());
 
-    alert("Login exitoso. Bienvenido, " + datos.nombre_completo);
+    
     // Cuando exista dashboard.html, aquí redirigimos:
-    // window.location.href = "dashboard.html";
+    window.location.href = "personas.html";
 
   } catch (err) {
     console.error(err);
