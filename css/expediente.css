@@ -1,0 +1,84 @@
+.link-volver {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.link-volver:hover {
+  text-decoration: underline;
+}
+
+.tarjeta-persona {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.tarjeta-persona h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.datos-persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.datos-persona-grid strong {
+  color: #333;
+}
+
+.lista-sacramentos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-sacramento {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tarjeta-sacramento h3 {
+  color: #2c3e50;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.tarjeta-sacramento p {
+  font-size: 12px;
+  color: #777;
+}
+
+.badge-estado {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.badge-pendiente { background: #fdebd0; color: #9a6a00; }
+.badge-programado { background: #d6eaf8; color: #1a5276; }
+.badge-realizado { background: #d5f5e3; color: #1e8449; }
+.badge-boleta_entregada { background: #e8daef; color: #6c3483; }
+
+.subtitulo-seccion {
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #2c3e50;
+}

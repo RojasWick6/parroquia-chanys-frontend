@@ -183,3 +183,13 @@
   gap: 10px;
   margin-top: 20px;
 }
+
+.link-nombre {
+  color: #2980b9;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link-nombre:hover {
+  text-decoration: underline;
+}

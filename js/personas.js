@@ -31,7 +31,7 @@ async function cargarPersonas(busqueda = "") {
 
       const fila = document.createElement("tr");
       fila.innerHTML = `
-        <td>${nombreCompleto}</td>
+        <td><a href="expediente.html?id=${p.id}" class="link-nombre">${nombreCompleto}</a></td>
         <td>${fecha}</td>
         <td>${p.curp || "-"}</td>
         <td>${p.telefono || "-"}</td>
