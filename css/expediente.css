@@ -82,3 +82,24 @@
   font-size: 14px;
   color: #2c3e50;
 }
+.btn-boleta {
+  border: none;
+  background: #1e8449;
+  color: white;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 8px;
+}
+
+.btn-boleta:hover {
+  background: #196f3d;
+}
+
+.texto-aviso {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+  margin-right: 8px;
+}

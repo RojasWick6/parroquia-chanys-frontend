@@ -97,20 +97,30 @@ async function cargarSacramentos() {
 
       const div = document.createElement("div");
       div.className = "tarjeta-sacramento";
-      div.innerHTML = `
-        <div>
-          <h3>${NOMBRES_TIPO[s.tipo]} <span class="badge-estado badge-${s.estado}">${NOMBRES_ESTADO[s.estado]}</span></h3>
-          <p>${fecha} · ${s.sacerdote_nombre || "Sin sacerdote asignado"} · Acta: ${s.numero_acta || "-"}</p>
-        </div>
-        <div>
-          <button class="btn-editar" data-id="${s.id}">Editar</button>
-        </div>
-      `;
+      const puedeGenerarBoleta = s.fecha_sacramento && s.numero_acta;
+
+            div.innerHTML = `
+              <div>
+                <h3>${NOMBRES_TIPO[s.tipo]} <span class="badge-estado badge-${s.estado}">${NOMBRES_ESTADO[s.estado]}</span></h3>
+                <p>${fecha} · ${s.sacerdote_nombre || "Sin sacerdote asignado"} · Acta: ${s.numero_acta || "-"}</p>
+              </div>
+              <div>
+                ${puedeGenerarBoleta
+                  ? `<button class="btn-boleta" data-id="${s.id}">Generar boleta</button>`
+                  : `<span class="texto-aviso" title="Falta fecha o número de acta">Falta info para boleta</span>`
+                }
+                <button class="btn-editar" data-id="${s.id}">Editar</button>
+              </div>
+            `;
       lista.appendChild(div);
     });
 
     document.querySelectorAll(".btn-editar").forEach((btn) => {
       btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
+    });
+
+    document.querySelectorAll(".btn-boleta").forEach((btn) => {
+      btn.addEventListener("click", () => generarBoleta(btn.dataset.id));
     });
 
   } catch (err) {
@@ -222,6 +232,12 @@ document.getElementById("formSacramento").addEventListener("submit", async funct
     modalError.textContent = "No se pudo conectar con el servidor";
   }
 });
+
+function generarBoleta(sacramentoId) {
+  const url = `${API_URL}/api/sacramentos/${sacramentoId}/boleta?usuarioId=${sesionActual.id}`;
+  window.open(url, "_blank");
+}
+
 
 cargarPersona();
 cargarSacerdotesDropdown();

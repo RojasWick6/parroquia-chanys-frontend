@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impresión por lote - Sistema Parroquial</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/personas.css">
+  <link rel="stylesheet" href="css/expediente.css">
+</head>
+<body class="pagina-interna">
+
+  <header class="topbar">
+    <h2>Sistema de Gestión Parroquial</h2>
+    <div class="topbar-usuario">
+      <span id="nombreUsuario"></span>
+      <button id="btnLogout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <a href="personas.html" class="link-volver">&larr; Volver a Personas</a>
+
+    <div class="encabezado-modulo">
+      <h1>Impresión de boletas por lote</h1>
+    </div>
+
+    <div class="tarjeta-persona">
+      <form id="formLote">
+        <div class="fila-form">
+          <div>
+            <label for="tipo">Tipo de sacramento *</label>
+            <select id="tipo" required>
+              <option value="">Selecciona...</option>
+              <option value="bautizo">Bautizo</option>
+              <option value="primera_comunion">Primera Comunión</option>
+              <option value="confirmacion">Confirmación</option>
+            </select>
+          </div>
+          <div>
+            <label for="estado">Estado (opcional)</label>
+            <select id="estado">
+              <option value="">Todos</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="programado">Programado</option>
+              <option value="realizado">Realizado</option>
+              <option value="boleta_entregada">Boleta entregada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fila-form">
+          <div>
+            <label for="fechaDesde">Desde (opcional)</label>
+            <input type="date" id="fechaDesde">
+          </div>
+          <div>
+            <label for="fechaHasta">Hasta (opcional)</label>
+            <input type="date" id="fechaHasta">
+          </div>
+        </div>
+
+        <p id="mensajeError" class="mensaje-error"></p>
+
+        <div class="modal-botones" style="justify-content:flex-start;">
+          <button type="submit" class="btn-primario">Generar PDF del lote</button>
+        </div>
+      </form>
+    </div>
+
+    <p class="mensaje-vacio">Se incluirán únicamente los sacramentos que ya tengan fecha y número de acta capturados. Cada boleta generada quedará registrada en el historial.</p>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/boletas-lote.js"></script>
+</body>
+</html>
