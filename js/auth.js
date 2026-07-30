@@ -27,7 +27,7 @@ document.getElementById("formLogin").addEventListener("submit", async function (
 
     
     // Cuando exista dashboard.html, aquí redirigimos:
-    window.location.href = "personas.html";
+    window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);

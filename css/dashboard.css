@@ -1,0 +1,74 @@
+.tarjetas-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.tarjeta-numero {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.tarjeta-numero .numero {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.tarjeta-numero .etiqueta {
+  font-size: 12px;
+  color: #777;
+  margin-top: 5px;
+}
+
+.columnas-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.panel-dashboard {
+  background: white;
+  padding: 18px 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.panel-dashboard h2 {
+  font-size: 14px;
+  color: #2c3e50;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.item-dashboard {
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 13px;
+}
+
+.item-dashboard:last-child {
+  border-bottom: none;
+}
+
+.item-dashboard .nombre-item {
+  color: #333;
+  font-weight: 500;
+}
+
+.item-dashboard .detalle-item {
+  color: #999;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.sin-datos {
+  color: #aaa;
+  font-size: 13px;
+  font-style: italic;
+}

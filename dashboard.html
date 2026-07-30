@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Sistema Parroquial</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/personas.css">
+  <link rel="stylesheet" href="css/expediente.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="pagina-interna">
+
+  <header class="topbar">
+    <h2>Sistema de Gestión Parroquial</h2>
+    <div class="topbar-usuario">
+      <span id="nombreUsuario"></span>
+      <button id="btnLogout">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <div class="encabezado-modulo">
+      <h1>Dashboard</h1>
+      <div>
+        <a href="personas.html" class="btn-secundario" style="text-decoration:none;">Personas</a>
+        <a href="boletas-lote.html" class="btn-secundario" style="text-decoration:none;">Imprimir por lote</a>
+      </div>
+    </div>
+
+    <div class="tarjetas-resumen" id="tarjetasResumen">
+      <!-- Se llena por JS -->
+    </div>
+
+    <div class="columnas-dashboard">
+      <section class="panel-dashboard">
+        <h2>Últimas personas registradas</h2>
+        <div id="listaUltimasPersonas"></div>
+      </section>
+
+      <section class="panel-dashboard">
+        <h2>Últimas boletas generadas</h2>
+        <div id="listaUltimasBoletas"></div>
+      </section>
+
+      <section class="panel-dashboard">
+        <h2>Próximos sacramentos programados</h2>
+        <div id="listaProximos"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/sesion.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
