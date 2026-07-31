@@ -4,72 +4,123 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Impresión por lote - Sistema Parroquial</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/personas.css">
   <link rel="stylesheet" href="css/expediente.css">
 </head>
 <body class="pagina-interna">
 
-  <header class="topbar">
-    <h2>Sistema de Gestión Parroquial</h2>
-    <div class="topbar-usuario">
-      <span id="nombreUsuario"></span>
-      <button id="btnLogout">Cerrar sesión</button>
-    </div>
-  </header>
+  <div class="app-shell">
 
-  <main class="contenedor">
-    <a href="personas.html" class="link-volver">&larr; Volver a Personas</a>
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="28" y="6" width="8" height="10" fill="currentColor"/>
+          <rect x="24" y="10" width="16" height="4" fill="currentColor"/>
+          <path d="M16 58 L16 30 L32 18 L48 30 L48 58 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <rect x="27" y="40" width="10" height="18" fill="currentColor"/>
+          <rect x="30.5" y="26" width="3" height="10" fill="currentColor"/>
+          <rect x="27" y="29.5" width="10" height="3" fill="currentColor"/>
+        </svg>
+        <div class="sidebar-logo-texto">
+          <span>Sistema de Gestión</span>
+          <strong>Parroquial</strong>
+        </div>
+      </div>
 
-    <div class="encabezado-modulo">
-      <h1>Impresión de boletas por lote</h1>
-    </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
+          Dashboard
+        </a>
+        <a href="personas.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M14.7 14.3c2.6-.3 4.8 1.9 5.3 5.3"/></svg>
+          Personas
+        </a>
+        <a href="usuarios.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><circle cx="10" cy="8.5" r="3.3"/><path d="M3.5 20c0-3.7 2.9-6.3 6.5-6.3s6.5 2.6 6.5 6.3"/><path d="M17 4.5v3M15.5 6h3"/></svg>
+          Usuarios
+        </a>
+        <a href="auditoria.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          Auditoría
+        </a>
+        <a href="configuracion.html" class="nav-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.2M12 18.8V21M21 12h-2.2M5.2 12H3M18.4 5.6l-1.5 1.5M7.1 16.9l-1.5 1.5M18.4 18.4l-1.5-1.5M7.1 7.1L5.6 5.6"/></svg>
+          Configuración
+        </a>
 
-    <div class="tarjeta-persona">
-      <form id="formLote">
-        <div class="fila-form">
-          <div>
-            <label for="tipo">Tipo de sacramento *</label>
-            <select id="tipo" required>
-              <option value="">Selecciona...</option>
-              <option value="bautizo">Bautizo</option>
-              <option value="primera_comunion">Primera Comunión</option>
-              <option value="confirmacion">Confirmación</option>
-            </select>
-          </div>
-          <div>
-            <label for="estado">Estado (opcional)</label>
-            <select id="estado">
-              <option value="">Todos</option>
-              <option value="pendiente">Pendiente</option>
-              <option value="programado">Programado</option>
-              <option value="realizado">Realizado</option>
-              <option value="boleta_entregada">Boleta entregada</option>
-            </select>
-          </div>
+        <div class="nav-grupo">
+          <span class="nav-grupo-titulo">Informes</span>
+          <a href="boletas-lote.html" class="nav-item nav-item-sub nav-activo">
+            <svg viewBox="0 0 24 24"><rect x="5" y="9" width="14" height="7" rx="1"/><path d="M7 9V4h10v5M7 16v4h10v-4"/></svg>
+            Imprimir por lote
+          </a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-topbar">
+        <h1>Impresión de boletas por lote</h1>
+        <div class="topbar-usuario">
+          <span id="nombreUsuario"></span>
+          <button id="btnLogout">Cerrar sesión</button>
+        </div>
+      </header>
+
+      <main class="app-contenido">
+        <div class="tarjeta-persona">
+          <form id="formLote">
+            <div class="fila-form">
+              <div>
+                <label for="tipo">Tipo de sacramento *</label>
+                <select id="tipo" required>
+                  <option value="">Selecciona...</option>
+                  <option value="bautizo">Bautizo</option>
+                  <option value="primera_comunion">Primera Comunión</option>
+                  <option value="confirmacion">Confirmación</option>
+                </select>
+              </div>
+              <div>
+                <label for="estado">Estado (opcional)</label>
+                <select id="estado">
+                  <option value="">Todos</option>
+                  <option value="pendiente">Pendiente</option>
+                  <option value="programado">Programado</option>
+                  <option value="realizado">Realizado</option>
+                  <option value="boleta_entregada">Boleta entregada</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="fila-form">
+              <div>
+                <label for="fechaDesde">Desde (opcional)</label>
+                <input type="date" id="fechaDesde">
+              </div>
+              <div>
+                <label for="fechaHasta">Hasta (opcional)</label>
+                <input type="date" id="fechaHasta">
+              </div>
+            </div>
+
+            <p id="mensajeError" class="mensaje-error"></p>
+
+            <div class="modal-botones" style="justify-content:flex-start;">
+              <button type="submit" class="btn-primario">Generar PDF del lote</button>
+            </div>
+          </form>
         </div>
 
-        <div class="fila-form">
-          <div>
-            <label for="fechaDesde">Desde (opcional)</label>
-            <input type="date" id="fechaDesde">
-          </div>
-          <div>
-            <label for="fechaHasta">Hasta (opcional)</label>
-            <input type="date" id="fechaHasta">
-          </div>
-        </div>
-
-        <p id="mensajeError" class="mensaje-error"></p>
-
-        <div class="modal-botones" style="justify-content:flex-start;">
-          <button type="submit" class="btn-primario">Generar PDF del lote</button>
-        </div>
-      </form>
+        <p class="mensaje-vacio" style="text-align:left;">Se incluirán únicamente los sacramentos que ya tengan fecha y número de acta capturados. Cada boleta generada quedará registrada en el historial.</p>
+      </main>
     </div>
-
-    <p class="mensaje-vacio">Se incluirán únicamente los sacramentos que ya tengan fecha y número de acta capturados. Cada boleta generada quedará registrada en el historial.</p>
-  </main>
+  </div>
 
   <script src="js/config.js"></script>
   <script src="js/sesion.js"></script>

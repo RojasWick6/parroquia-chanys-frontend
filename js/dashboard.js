@@ -20,22 +20,34 @@ async function cargarDashboard() {
     });
     const datos = await respuesta.json();
 
-    document.getElementById("tarjetasResumen").innerHTML = `
+document.getElementById("tarjetasResumen").innerHTML = `
       <div class="tarjeta-numero">
-        <div class="numero">${datos.totalPersonas}</div>
-        <div class="etiqueta">Personas registradas</div>
+        <div class="icono-tarjeta icono-personas"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M14.7 14.3c2.6-.3 4.8 1.9 5.3 5.3"/></svg></div>
+        <div>
+          <div class="numero">${datos.totalPersonas}</div>
+          <div class="etiqueta">Personas registradas</div>
+        </div>
       </div>
       <div class="tarjeta-numero">
-        <div class="numero">${datos.sacramentosEsteAnio.bautizo}</div>
-        <div class="etiqueta">Bautizos este año</div>
+        <div class="icono-tarjeta icono-bautizo"><svg viewBox="0 0 24 24"><path d="M12 2c2 3 4 5.5 4 9a4 4 0 1 1-8 0c0-3.5 2-6 4-9z"/></svg></div>
+        <div>
+          <div class="numero">${datos.sacramentosEsteAnio.bautizo}</div>
+          <div class="etiqueta">Bautizos este año</div>
+        </div>
       </div>
       <div class="tarjeta-numero">
-        <div class="numero">${datos.sacramentosEsteAnio.primera_comunion}</div>
-        <div class="etiqueta">Comuniones este año</div>
+        <div class="icono-tarjeta icono-comunion"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg></div>
+        <div>
+          <div class="numero">${datos.sacramentosEsteAnio.primera_comunion}</div>
+          <div class="etiqueta">Comuniones este año</div>
+        </div>
       </div>
       <div class="tarjeta-numero">
-        <div class="numero">${datos.sacramentosEsteAnio.confirmacion}</div>
-        <div class="etiqueta">Confirmaciones este año</div>
+        <div class="icono-tarjeta icono-confirmacion"><svg viewBox="0 0 24 24"><path d="M3 12c3-4 6-4 9 0s6 4 9 0"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0"/></svg></div>
+        <div>
+          <div class="numero">${datos.sacramentosEsteAnio.confirmacion}</div>
+          <div class="etiqueta">Confirmaciones este año</div>
+        </div>
       </div>
     `;
 

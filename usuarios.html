@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personas - Sistema Parroquial</title>
+  <title>Usuarios - Sistema Parroquial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -37,11 +37,11 @@
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg>
           Dashboard
         </a>
-        <a href="personas.html" class="nav-item nav-activo">
+        <a href="personas.html" class="nav-item">
           <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17.5" cy="9" r="2.4"/><path d="M14.7 14.3c2.6-.3 4.8 1.9 5.3 5.3"/></svg>
           Personas
         </a>
-        <a href="usuarios.html" class="nav-item">
+        <a href="usuarios.html" class="nav-item nav-activo">
           <svg viewBox="0 0 24 24"><circle cx="10" cy="8.5" r="3.3"/><path d="M3.5 20c0-3.7 2.9-6.3 6.5-6.3s6.5 2.6 6.5 6.3"/><path d="M17 4.5v3M15.5 6h3"/></svg>
           Usuarios
         </a>
@@ -66,7 +66,7 @@
 
     <div class="app-main">
       <header class="app-topbar">
-        <h1>Personas</h1>
+        <h1>Usuarios</h1>
         <div class="topbar-usuario">
           <span id="nombreUsuario"></span>
           <button id="btnLogout">Cerrar sesión</button>
@@ -75,87 +75,54 @@
 
       <main class="app-contenido">
         <div class="encabezado-modulo">
-          <button id="btnNuevaPersona" class="btn-primario">+ Nueva persona</button>
-        </div>
-
-        <div class="barra-busqueda">
-          <input type="text" id="inputBusqueda" placeholder="Buscar por nombre, apellido o CURP...">
+          <button id="btnNuevoUsuario" class="btn-primario">+ Nuevo usuario</button>
         </div>
 
         <table class="tabla-datos">
           <thead>
             <tr>
-              <th>Nombre completo</th>
-              <th>Fecha de nacimiento</th>
-              <th>CURP</th>
-              <th>Teléfono</th>
+              <th>Nombre</th>
+              <th>Usuario</th>
+              <th>Rol</th>
+              <th>Estado</th>
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody id="tablaPersonas"></tbody>
+          <tbody id="tablaUsuarios"></tbody>
         </table>
-
-        <p id="mensajeVacio" class="mensaje-vacio" style="display:none;">No se encontraron personas.</p>
       </main>
     </div>
   </div>
 
-  <div id="modalPersona" class="modal-overlay" style="display:none;">
-    <div class="modal-caja">
-      <h2 id="modalTitulo">Nueva persona</h2>
-      <form id="formPersona">
-        <input type="hidden" id="personaId">
+  <div id="modalUsuario" class="modal-overlay" style="display:none;">
+    <div class="modal-caja" style="max-width:450px;">
+      <h2 id="modalTitulo">Nuevo usuario</h2>
+      <form id="formUsuario">
+        <input type="hidden" id="usuarioId">
 
-        <div class="fila-form">
-          <div>
-            <label for="nombre">Nombre *</label>
-            <input type="text" id="nombre" required>
-          </div>
-          <div>
-            <label for="apellido_paterno">Apellido paterno *</label>
-            <input type="text" id="apellido_paterno" required>
-          </div>
-          <div>
-            <label for="apellido_materno">Apellido materno</label>
-            <input type="text" id="apellido_materno">
-          </div>
+        <label for="nombre_completo">Nombre completo *</label>
+        <input type="text" id="nombre_completo" required>
+
+        <div id="campoUsuarioLogin">
+          <label for="usuario_login">Nombre de usuario (login) *</label>
+          <input type="text" id="usuario_login">
         </div>
 
-        <div class="fila-form">
-          <div>
-            <label for="fecha_nacimiento">Fecha de nacimiento</label>
-            <input type="date" id="fecha_nacimiento">
-          </div>
-          <div>
-            <label for="lugar_nacimiento">Lugar de nacimiento</label>
-            <input type="text" id="lugar_nacimiento">
-          </div>
-          <div>
-            <label for="curp">CURP</label>
-            <input type="text" id="curp" maxlength="18">
-          </div>
+        <div id="campoPassword">
+          <label for="password">Contraseña (mínimo 6 caracteres) *</label>
+          <input type="password" id="password">
         </div>
 
-        <div class="fila-form">
-          <div>
-            <label for="nombre_padre">Nombre del padre</label>
-            <input type="text" id="nombre_padre">
-          </div>
-          <div>
-            <label for="nombre_madre">Nombre de la madre</label>
-            <input type="text" id="nombre_madre">
-          </div>
-        </div>
+        <label for="rol">Rol *</label>
+        <select id="rol" required>
+          <option value="secretaria">Secretaria</option>
+          <option value="admin">Administrador</option>
+        </select>
 
-        <div class="fila-form">
-          <div>
-            <label for="direccion">Dirección</label>
-            <input type="text" id="direccion">
-          </div>
-          <div>
-            <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono">
-          </div>
+        <div id="campoActivo" style="display:none;">
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:14px;">
+            <input type="checkbox" id="activo" style="width:auto;"> Usuario activo
+          </label>
         </div>
 
         <p id="modalError" class="mensaje-error"></p>
@@ -168,8 +135,26 @@
     </div>
   </div>
 
+  <div id="modalPassword" class="modal-overlay" style="display:none;">
+    <div class="modal-caja" style="max-width:400px;">
+      <h2>Cambiar contraseña</h2>
+      <form id="formPassword">
+        <input type="hidden" id="passwordUsuarioId">
+        <label for="passwordNuevo">Nueva contraseña (mínimo 6 caracteres) *</label>
+        <input type="password" id="passwordNuevo" required>
+
+        <p id="passwordError" class="mensaje-error"></p>
+
+        <div class="modal-botones">
+          <button type="button" id="btnCancelarPassword" class="btn-secundario">Cancelar</button>
+          <button type="submit" class="btn-primario">Cambiar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/config.js"></script>
   <script src="js/sesion.js"></script>
-  <script src="js/personas.js"></script>
+  <script src="js/usuarios.js"></script>
 </body>
 </html>
