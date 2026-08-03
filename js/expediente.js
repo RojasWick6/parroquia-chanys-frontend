@@ -38,6 +38,7 @@ async function cargarPersona() {
       ? new Date(persona.fecha_nacimiento).toLocaleDateString("es-MX", { timeZone: "UTC" })
       : "-";
 
+    document.getElementById("tituloExpediente").textContent = `${persona.nombre} ${persona.apellido_paterno}`;
     document.getElementById("tarjetaPersona").innerHTML = `
       <h2>${persona.nombre} ${persona.apellido_paterno} ${persona.apellido_materno || ""}</h2>
       <div class="datos-persona-grid">

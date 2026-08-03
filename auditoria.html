@@ -15,6 +15,7 @@
 <body class="pagina-interna">
 
   <div class="app-shell">
+    <button id="btnMenuMovil" class="btn-menu-movil" aria-label="Abrir menú">☰</button>
 
     <aside class="sidebar">
       <div class="sidebar-logo">
@@ -76,18 +77,20 @@
       <main class="app-contenido">
         <p class="mensaje-vacio" style="text-align:left;padding:0 0 15px;font-style:normal;">Se muestran los últimos 100 movimientos registrados.</p>
 
-        <table class="tabla-datos">
-          <thead>
-            <tr>
-              <th>Fecha</th>
-              <th>Usuario</th>
-              <th>Acción</th>
-              <th>Entidad</th>
-              <th>Detalle</th>
-            </tr>
-          </thead>
-          <tbody id="tablaAuditoria"></tbody>
-        </table>
+      <div class="tabla-scroll">
+                <table class="tabla-datos">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Usuario</th>
+                      <th>Acción</th>
+                      <th>Entidad</th>
+                      <th>Detalle</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tablaAuditoria"></tbody>
+                </table>
+              </div>
 
         <div class="paginacion" id="paginacion" style="display:none;">
           <button id="btnAnterior">&larr; Anterior</button>
@@ -100,6 +103,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/sesion.js"></script>
+  <script src="js/nav-movil.js"></script>
   <script src="js/auditoria.js"></script>
 </body>
 </html>

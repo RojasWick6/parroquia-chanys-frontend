@@ -14,20 +14,28 @@
   flex-wrap: wrap;
 }
 
-.btn-primario {
-  background: linear-gradient(180deg, var(--marino), var(--marino-oscuro));
-  color: #f4ead9;
-  border: none;
-  padding: 10px 18px;
+.btn-primario, .btn-secundario {
+  height: 40px;
+  padding: 0 18px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13.5px;
   font-weight: 700;
-  box-shadow: 0 4px 10px rgba(22, 38, 61, 0.25);
-  transition: transform 0.1s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.btn-primario {
+  background: linear-gradient(180deg, var(--marino), var(--marino-oscuro));
+  color: #f4ead9;
+  border: none;
+  box-shadow: 0 4px 10px rgba(22, 38, 61, 0.25);
+  transition: transform 0.1s ease;
 }
 .btn-primario:hover { transform: translateY(-1px); }
 
@@ -35,14 +43,7 @@
   background: var(--crema-tarjeta);
   color: var(--texto-oscuro);
   border: 1px solid var(--dorado-suave);
-  padding: 10px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13.5px;
   font-weight: 600;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
 }
 .btn-secundario:hover { border-color: var(--dorado); }
 
@@ -239,10 +240,51 @@ label {
 .paginacion span { font-size: 13px; color: var(--texto-suave); }
 
 /* ===== Responsivo ===== */
+/* ===== Contenedor de scroll para tablas ===== */
+.tabla-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(58,47,34,0.06);
+}
+
+.tabla-scroll .tabla-datos {
+  box-shadow: none;
+  min-width: 600px;
+}
+
 @media (max-width: 600px) {
   .fila-form { flex-direction: column; }
   .fila-form > div { min-width: 100%; }
-  .modal-caja { padding: 20px; }
+
+  .modal-overlay { padding: 12px; align-items: flex-start; padding-top: 30px; }
+  .modal-caja {
+    padding: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
   .tabla-datos { font-size: 12px; }
-  .tabla-datos th, .tabla-datos td { padding: 9px 10px; }
+  .tabla-datos th, .tabla-datos td { padding: 9px 10px; white-space: nowrap; }
+
+  .modal-botones {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .modal-botones .btn-primario,
+  .modal-botones .btn-secundario {
+    width: 100%;
+  }
+
+  .encabezado-modulo {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .encabezado-modulo .btn-primario,
+  .encabezado-modulo .btn-secundario,
+  .encabezado-modulo a.btn-secundario {
+    width: 100%;
+  }
 }

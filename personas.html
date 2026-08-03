@@ -15,6 +15,7 @@
 <body class="pagina-interna">
 
   <div class="app-shell">
+    <button id="btnMenuMovil" class="btn-menu-movil" aria-label="Abrir menú">☰</button>
 
     <aside class="sidebar">
       <div class="sidebar-logo">
@@ -82,18 +83,20 @@
           <input type="text" id="inputBusqueda" placeholder="Buscar por nombre, apellido o CURP...">
         </div>
 
-        <table class="tabla-datos">
-          <thead>
-            <tr>
-              <th>Nombre completo</th>
-              <th>Fecha de nacimiento</th>
-              <th>CURP</th>
-              <th>Teléfono</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="tablaPersonas"></tbody>
-        </table>
+        <div class="tabla-scroll">
+                  <table class="tabla-datos">
+                    <thead>
+                      <tr>
+                        <th>Nombre completo</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>CURP</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tablaPersonas"></tbody>
+                  </table>
+                </div>
 
         <p id="mensajeVacio" class="mensaje-vacio" style="display:none;">No se encontraron personas.</p>
       </main>
@@ -170,6 +173,7 @@
 
   <script src="js/config.js"></script>
   <script src="js/sesion.js"></script>
+  <script src="js/nav-movil.js"></script>
   <script src="js/personas.js"></script>
 </body>
 </html>
