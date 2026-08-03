@@ -12,6 +12,7 @@ async function cargarConfiguracion() {
     document.getElementById("telefono").value = config.telefono || "";
     document.getElementById("correo").value = config.correo || "";
     document.getElementById("nombre_parroco").value = config.nombre_parroco || "";
+    document.getElementById("registro_sgar").value = config.registro_sgar || "";
   } catch (err) {
     console.error(err);
     alert("No se pudo cargar la configuración");
@@ -34,6 +35,7 @@ document.getElementById("formConfiguracion").addEventListener("submit", async fu
     telefono: document.getElementById("telefono").value.trim(),
     correo: document.getElementById("correo").value.trim(),
     nombre_parroco: document.getElementById("nombre_parroco").value.trim(),
+    registro_sgar: document.getElementById("registro_sgar").value.trim(),
   };
 
   try {
