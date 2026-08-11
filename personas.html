@@ -88,21 +88,27 @@
         </div>
 
         <div class="tabla-scroll">
-                  <table class="tabla-datos">
-                    <thead>
-                      <tr>
-                        <th>Nombre completo</th>
-                        <th>Fecha de nacimiento</th>
-                        <th>CURP</th>
-                        <th>Teléfono</th>
-                        <th>Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody id="tablaPersonas"></tbody>
-                  </table>
-                </div>
+          <table class="tabla-datos">
+            <thead>
+              <tr>
+                <th>Nombre completo</th>
+                <th>Fecha de nacimiento</th>
+                <th>CURP</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPersonas"></tbody>
+          </table>
+        </div>
 
         <p id="mensajeVacio" class="mensaje-vacio" style="display:none;">No se encontraron personas.</p>
+
+        <div class="paginacion" id="paginacionPersonas" style="display:none;">
+          <button id="btnAnteriorPersonas">&larr; Anterior</button>
+          <span id="infoPaginaPersonas"></span>
+          <button id="btnSiguientePersonas">Siguiente &rarr;</button>
+        </div>
       </main>
     </div>
   </div>

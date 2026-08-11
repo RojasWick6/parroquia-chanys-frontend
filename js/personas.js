@@ -1,9 +1,9 @@
 let personaEditandoId = null;
+const PERSONAS_POR_PAGINA = 10;
+let todasLasPersonas = [];
+let paginaPersonasActual = 1;
 
 async function cargarPersonas(busqueda = "") {
-  const tabla = document.getElementById("tablaPersonas");
-  const mensajeVacio = document.getElementById("mensajeVacio");
-
   try {
     const url = busqueda
       ? `${API_URL}/api/personas?busqueda=${encodeURIComponent(busqueda)}`
@@ -13,50 +13,82 @@ async function cargarPersonas(busqueda = "") {
       headers: { "x-usuario-id": sesionActual.id }
     });
 
-    const personas = await respuesta.json();
-
-    tabla.innerHTML = "";
-
-    document.getElementById("contadorPersonas").textContent = `Personas registradas: ${personas.length}`;
-
-    if (personas.length === 0) {
-      mensajeVacio.style.display = "block";
-      return;
-    }
-    mensajeVacio.style.display = "none";
-
-    personas.forEach((p) => {
-      const nombreCompleto = `${p.nombre} ${p.apellido_paterno} ${p.apellido_materno || ""}`.trim();
-      const fecha = p.fecha_nacimiento
-        ? new Date(p.fecha_nacimiento).toLocaleDateString("es-MX", { timeZone: "UTC" })
-        : "-";
-
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td><a href="expediente.html?id=${p.id}" class="link-nombre">${nombreCompleto}</a></td>
-        <td>${fecha}</td>
-        <td>${p.curp || "-"}</td>
-        <td>${p.telefono || "-"}</td>
-        <td>
-          <button class="btn-editar" data-id="${p.id}">Editar</button>
-          <button class="btn-eliminar" data-id="${p.id}">Eliminar</button>
-        </td>
-      `;
-      tabla.appendChild(fila);
-    });
-
-    document.querySelectorAll(".btn-editar").forEach((btn) => {
-      btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
-    });
-    document.querySelectorAll(".btn-eliminar").forEach((btn) => {
-      btn.addEventListener("click", () => eliminarPersona(btn.dataset.id));
-    });
+    todasLasPersonas = await respuesta.json();
+    document.getElementById("contadorPersonas").textContent = `Personas registradas: ${todasLasPersonas.length}`;
+    paginaPersonasActual = 1;
+    renderizarPaginaPersonas();
 
   } catch (err) {
     console.error(err);
     alert("No se pudo cargar la lista de personas");
   }
 }
+
+function renderizarPaginaPersonas() {
+  const tabla = document.getElementById("tablaPersonas");
+  const mensajeVacio = document.getElementById("mensajeVacio");
+  const paginacion = document.getElementById("paginacionPersonas");
+
+  if (todasLasPersonas.length === 0) {
+    tabla.innerHTML = "";
+    mensajeVacio.style.display = "block";
+    paginacion.style.display = "none";
+    return;
+  }
+  mensajeVacio.style.display = "none";
+
+  const totalPaginas = Math.max(1, Math.ceil(todasLasPersonas.length / PERSONAS_POR_PAGINA));
+  const inicio = (paginaPersonasActual - 1) * PERSONAS_POR_PAGINA;
+  const personasPagina = todasLasPersonas.slice(inicio, inicio + PERSONAS_POR_PAGINA);
+
+  tabla.innerHTML = "";
+  personasPagina.forEach((p) => {
+    const nombreCompleto = `${p.nombre} ${p.apellido_paterno} ${p.apellido_materno || ""}`.trim();
+    const fecha = p.fecha_nacimiento
+      ? new Date(p.fecha_nacimiento).toLocaleDateString("es-MX", { timeZone: "UTC" })
+      : "-";
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td><a href="expediente.html?id=${p.id}" class="link-nombre">${nombreCompleto}</a></td>
+      <td>${fecha}</td>
+      <td>${p.curp || "-"}</td>
+      <td>${p.telefono || "-"}</td>
+      <td>
+        <button class="btn-editar" data-id="${p.id}">Editar</button>
+        <button class="btn-eliminar" data-id="${p.id}">Eliminar</button>
+      </td>
+    `;
+    tabla.appendChild(fila);
+  });
+
+  document.querySelectorAll(".btn-editar").forEach((btn) => {
+    btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
+  });
+  document.querySelectorAll(".btn-eliminar").forEach((btn) => {
+    btn.addEventListener("click", () => eliminarPersona(btn.dataset.id));
+  });
+
+  document.getElementById("infoPaginaPersonas").textContent = `Página ${paginaPersonasActual} de ${totalPaginas}`;
+  document.getElementById("btnAnteriorPersonas").disabled = paginaPersonasActual === 1;
+  document.getElementById("btnSiguientePersonas").disabled = paginaPersonasActual === totalPaginas;
+  paginacion.style.display = "flex";
+}
+
+document.getElementById("btnAnteriorPersonas").addEventListener("click", () => {
+  if (paginaPersonasActual > 1) {
+    paginaPersonasActual--;
+    renderizarPaginaPersonas();
+  }
+});
+
+document.getElementById("btnSiguientePersonas").addEventListener("click", () => {
+  const totalPaginas = Math.ceil(todasLasPersonas.length / PERSONAS_POR_PAGINA);
+  if (paginaPersonasActual < totalPaginas) {
+    paginaPersonasActual++;
+    renderizarPaginaPersonas();
+  }
+});
 
 function abrirModalNueva() {
   personaEditandoId = null;
@@ -161,36 +193,36 @@ document.getElementById("formPersona").addEventListener("submit", async function
 
     const resultado = await respuesta.json();
 
-        if (!respuesta.ok) {
-          modalError.textContent = resultado.error || "Error al guardar";
-          return;
-        }
-
-        cerrarModal();
-        cargarPersonas(document.getElementById("inputBusqueda").value.trim());
-
-        if (!esEdicion) {
-          mostrarPromptSacramento(resultado.id, `${resultado.nombre} ${resultado.apellido_paterno}`);
-        }
-
-      } catch (err) {
-        console.error(err);
-        modalError.textContent = "No se pudo conectar con el servidor";
-      }
-    });
-
-    function mostrarPromptSacramento(personaId, nombreCompleto) {
-      document.getElementById("nombrePersonaCreada").textContent = nombreCompleto;
-      document.getElementById("modalPromptSacramento").style.display = "flex";
-
-      document.getElementById("btnOmitirSacramento").onclick = () => {
-        document.getElementById("modalPromptSacramento").style.display = "none";
-      };
-
-      document.getElementById("btnIrASacramento").onclick = () => {
-        window.location.href = `expediente.html?id=${personaId}&nuevo=1`;
-      };
+    if (!respuesta.ok) {
+      modalError.textContent = resultado.error || "Error al guardar";
+      return;
     }
+
+    cerrarModal();
+    cargarPersonas(document.getElementById("inputBusqueda").value.trim());
+
+    if (!esEdicion) {
+      mostrarPromptSacramento(resultado.id, `${resultado.nombre} ${resultado.apellido_paterno}`);
+    }
+
+  } catch (err) {
+    console.error(err);
+    modalError.textContent = "No se pudo conectar con el servidor";
+  }
+});
+
+function mostrarPromptSacramento(personaId, nombreCompleto) {
+  document.getElementById("nombrePersonaCreada").textContent = nombreCompleto;
+  document.getElementById("modalPromptSacramento").style.display = "flex";
+
+  document.getElementById("btnOmitirSacramento").onclick = () => {
+    document.getElementById("modalPromptSacramento").style.display = "none";
+  };
+
+  document.getElementById("btnIrASacramento").onclick = () => {
+    window.location.href = `expediente.html?id=${personaId}&nuevo=1`;
+  };
+}
 
 let temporizadorBusqueda;
 document.getElementById("inputBusqueda").addEventListener("input", function () {

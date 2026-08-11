@@ -1,42 +1,79 @@
 let usuarioEditandoId = null;
+const USUARIOS_POR_PAGINA = 10;
+let todosLosUsuarios = [];
+let paginaUsuariosActual = 1;
 
 async function cargarUsuarios() {
-  const tabla = document.getElementById("tablaUsuarios");
-
   try {
     const respuesta = await fetch(`${API_URL}/api/usuarios`, {
       headers: { "x-usuario-id": sesionActual.id }
     });
-    const usuarios = await respuesta.json();
-
-    tabla.innerHTML = "";
-    usuarios.forEach((u) => {
-      const fila = document.createElement("tr");
-      fila.innerHTML = `
-        <td>${u.nombre_completo}</td>
-        <td>${u.usuario}</td>
-        <td>${u.rol === "admin" ? "Administrador" : "Secretaria"}</td>
-        <td>${u.activo ? "Activo" : "Inactivo"}</td>
-        <td>
-          <button class="btn-editar" data-id="${u.id}">Editar</button>
-          <button class="btn-editar" data-id="${u.id}" data-accion="password">Contraseña</button>
-        </td>
-      `;
-      tabla.appendChild(fila);
-    });
-
-    document.querySelectorAll('[data-accion="password"]').forEach((btn) => {
-      btn.addEventListener("click", () => abrirModalPassword(btn.dataset.id));
-    });
-    document.querySelectorAll('.btn-editar:not([data-accion="password"])').forEach((btn) => {
-      btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id, usuarios));
-    });
-
+    todosLosUsuarios = await respuesta.json();
+    paginaUsuariosActual = 1;
+    renderizarPaginaUsuarios();
   } catch (err) {
     console.error(err);
     alert("No se pudo cargar la lista de usuarios");
   }
 }
+
+function renderizarPaginaUsuarios() {
+  const tabla = document.getElementById("tablaUsuarios");
+  const paginacion = document.getElementById("paginacionUsuarios");
+
+  if (todosLosUsuarios.length === 0) {
+    tabla.innerHTML = `<tr><td colspan="5">Sin usuarios registrados.</td></tr>`;
+    paginacion.style.display = "none";
+    return;
+  }
+
+  const totalPaginas = Math.max(1, Math.ceil(todosLosUsuarios.length / USUARIOS_POR_PAGINA));
+  const inicio = (paginaUsuariosActual - 1) * USUARIOS_POR_PAGINA;
+  const usuariosPagina = todosLosUsuarios.slice(inicio, inicio + USUARIOS_POR_PAGINA);
+
+  tabla.innerHTML = "";
+  usuariosPagina.forEach((u) => {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${u.nombre_completo}</td>
+      <td>${u.usuario}</td>
+      <td>${u.rol === "admin" ? "Administrador" : "Secretaria"}</td>
+      <td>${u.activo ? "Activo" : "Inactivo"}</td>
+      <td>
+        <button class="btn-editar" data-id="${u.id}">Editar</button>
+        <button class="btn-editar" data-id="${u.id}" data-accion="password">Contraseña</button>
+      </td>
+    `;
+    tabla.appendChild(fila);
+  });
+
+  document.querySelectorAll('[data-accion="password"]').forEach((btn) => {
+    btn.addEventListener("click", () => abrirModalPassword(btn.dataset.id));
+  });
+  document.querySelectorAll('.btn-editar:not([data-accion="password"])').forEach((btn) => {
+    btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id, todosLosUsuarios));
+  });
+
+  document.getElementById("infoPaginaUsuarios").textContent = `Página ${paginaUsuariosActual} de ${totalPaginas}`;
+  document.getElementById("btnAnteriorUsuarios").disabled = paginaUsuariosActual === 1;
+  document.getElementById("btnSiguienteUsuarios").disabled = paginaUsuariosActual === totalPaginas;
+  paginacion.style.display = "flex";
+}
+
+document.getElementById("btnAnteriorUsuarios").addEventListener("click", () => {
+  if (paginaUsuariosActual > 1) {
+    paginaUsuariosActual--;
+    renderizarPaginaUsuarios();
+  }
+});
+
+document.getElementById("btnSiguienteUsuarios").addEventListener("click", () => {
+  const totalPaginas = Math.ceil(todosLosUsuarios.length / USUARIOS_POR_PAGINA);
+  if (paginaUsuariosActual < totalPaginas) {
+    paginaUsuariosActual++;
+    renderizarPaginaUsuarios();
+  }
+});
 
 function abrirModalNuevo() {
   usuarioEditandoId = null;
@@ -62,7 +99,6 @@ function abrirModalEditar(id, listaUsuarios) {
   document.getElementById("rol").value = u.rol;
   document.getElementById("activo").checked = u.activo;
 
-  // En edicion no se cambia el usuario de login ni la contraseña desde aqui (para eso esta el modal de password)
   document.getElementById("campoUsuarioLogin").style.display = "none";
   document.getElementById("campoPassword").style.display = "none";
   document.getElementById("usuario_login").required = false;
