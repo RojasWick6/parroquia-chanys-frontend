@@ -288,3 +288,10 @@ label {
     width: 100%;
   }
 }
+
+.contador-personas {
+  font-size: 13px;
+  color: var(--texto-suave);
+  font-weight: 600;
+}
+.encabezado-acciones { display: flex; gap: 10px; flex-wrap: wrap; }

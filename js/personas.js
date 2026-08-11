@@ -17,6 +17,8 @@ async function cargarPersonas(busqueda = "") {
 
     tabla.innerHTML = "";
 
+    document.getElementById("contadorPersonas").textContent = `Personas registradas: ${personas.length}`;
+
     if (personas.length === 0) {
       mensajeVacio.style.display = "block";
       return;
@@ -159,19 +161,36 @@ document.getElementById("formPersona").addEventListener("submit", async function
 
     const resultado = await respuesta.json();
 
-    if (!respuesta.ok) {
-      modalError.textContent = resultado.error || "Error al guardar";
-      return;
+        if (!respuesta.ok) {
+          modalError.textContent = resultado.error || "Error al guardar";
+          return;
+        }
+
+        cerrarModal();
+        cargarPersonas(document.getElementById("inputBusqueda").value.trim());
+
+        if (!esEdicion) {
+          mostrarPromptSacramento(resultado.id, `${resultado.nombre} ${resultado.apellido_paterno}`);
+        }
+
+      } catch (err) {
+        console.error(err);
+        modalError.textContent = "No se pudo conectar con el servidor";
+      }
+    });
+
+    function mostrarPromptSacramento(personaId, nombreCompleto) {
+      document.getElementById("nombrePersonaCreada").textContent = nombreCompleto;
+      document.getElementById("modalPromptSacramento").style.display = "flex";
+
+      document.getElementById("btnOmitirSacramento").onclick = () => {
+        document.getElementById("modalPromptSacramento").style.display = "none";
+      };
+
+      document.getElementById("btnIrASacramento").onclick = () => {
+        window.location.href = `expediente.html?id=${personaId}&nuevo=1`;
+      };
     }
-
-    cerrarModal();
-    cargarPersonas(document.getElementById("inputBusqueda").value.trim());
-
-  } catch (err) {
-    console.error(err);
-    modalError.textContent = "No se pudo conectar con el servidor";
-  }
-});
 
 let temporizadorBusqueda;
 document.getElementById("inputBusqueda").addEventListener("input", function () {

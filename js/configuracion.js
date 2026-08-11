@@ -62,4 +62,65 @@ document.getElementById("formConfiguracion").addEventListener("submit", async fu
   }
 });
 
+const NOMBRES_TIPO_LIBRO = {
+  bautizo: "Bautizo",
+  primera_comunion: "Primera Comunión",
+  confirmacion: "Confirmación"
+};
+
+async function cargarLibros() {
+  const contenedor = document.getElementById("listaLibros");
+  try {
+    const respuesta = await fetch(`${API_URL}/api/libros`, {
+      headers: { "x-usuario-id": sesionActual.id }
+    });
+    const libros = await respuesta.json();
+
+    contenedor.innerHTML = libros.map(l => `
+      <div class="fila-form" style="align-items:flex-end;">
+        <div style="flex:2;">
+          <label>${NOMBRES_TIPO_LIBRO[l.tipo]}</label>
+          <input type="text" data-tipo="${l.tipo}" class="input-libro" value="${l.libro || ""}">
+        </div>
+        <div style="flex:1;">
+          <button type="button" class="btn-secundario btn-guardar-libro" data-tipo="${l.tipo}">Guardar</button>
+        </div>
+      </div>
+    `).join("");
+
+    document.querySelectorAll(".btn-guardar-libro").forEach(btn => {
+      btn.addEventListener("click", () => guardarLibro(btn.dataset.tipo));
+    });
+
+  } catch (err) {
+    console.error(err);
+    contenedor.innerHTML = '<p class="mensaje-error">No se pudieron cargar los libros</p>';
+  }
+}
+
+async function guardarLibro(tipo) {
+  const input = document.querySelector(`.input-libro[data-tipo="${tipo}"]`);
+  const libro = input.value.trim();
+
+  try {
+    const respuesta = await fetch(`${API_URL}/api/libros/${tipo}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "x-usuario-id": sesionActual.id },
+      body: JSON.stringify({ libro })
+    });
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+      alert(resultado.error || "Error al guardar");
+      return;
+    }
+    alert(`Libro de ${NOMBRES_TIPO_LIBRO[tipo]} actualizado`);
+  } catch (err) {
+    console.error(err);
+    alert("No se pudo conectar con el servidor");
+  }
+}
+
+cargarLibros();
+
 cargarConfiguracion();

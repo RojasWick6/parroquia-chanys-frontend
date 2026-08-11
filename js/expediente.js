@@ -138,6 +138,33 @@ function abrirModalNuevo() {
   document.getElementById("modalSacramento").style.display = "flex";
 }
 
+async function autocompletarLibroYActa() {
+  if (sacramentoEditandoId !== null) return; // solo autocompletar en registros nuevos
+  const tipo = document.getElementById("tipo").value;
+  if (!tipo) return;
+
+  try {
+    const [respLibros, respActa] = await Promise.all([
+      fetch(`${API_URL}/api/libros`, { headers: { "x-usuario-id": sesionActual.id } }),
+      fetch(`${API_URL}/api/sacramentos/siguiente-acta?tipo=${tipo}`, { headers: { "x-usuario-id": sesionActual.id } })
+    ]);
+    const libros = await respLibros.json();
+    const acta = await respActa.json();
+
+    const libroCorrespondiente = libros.find(l => l.tipo === tipo);
+    if (libroCorrespondiente && !document.getElementById("libro").value) {
+      document.getElementById("libro").value = libroCorrespondiente.libro || "";
+    }
+    if (acta.siguiente && !document.getElementById("numero_acta").value) {
+      document.getElementById("numero_acta").value = acta.siguiente;
+    }
+  } catch (err) {
+    console.error("No se pudo autocompletar libro/acta:", err);
+  }
+}
+
+document.getElementById("tipo").addEventListener("change", autocompletarLibroYActa);
+
 async function abrirModalEditar(id) {
   try {
     const respuesta = await fetch(`${API_URL}/api/sacramentos/${id}`, {
@@ -243,3 +270,7 @@ function generarBoleta(sacramentoId) {
 cargarPersona();
 cargarSacerdotesDropdown();
 cargarSacramentos();
+
+if (params.get("nuevo") === "1") {
+  setTimeout(abrirModalNuevo, 400);
+}
