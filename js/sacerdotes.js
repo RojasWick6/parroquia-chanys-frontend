@@ -22,8 +22,10 @@ async function cargarSacerdotes() {
       const fila = document.createElement("tr");
       fila.innerHTML = `
         <td>${s.nombre_completo}</td>
+        <td>${s.telefono || "-"}</td>
+        <td>${s.direccion || "-"}</td>
         <td>
-          <button class="btn-editar" data-id="${s.id}" data-nombre="${s.nombre_completo}">Editar</button>
+          <button class="btn-editar" data-id="${s.id}">Editar</button>
           <button class="btn-eliminar" data-id="${s.id}">Eliminar</button>
         </td>
       `;
@@ -31,7 +33,7 @@ async function cargarSacerdotes() {
     });
 
     document.querySelectorAll(".btn-editar").forEach((btn) => {
-      btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id, btn.dataset.nombre));
+      btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id, sacerdotes));
     });
     document.querySelectorAll(".btn-eliminar").forEach((btn) => {
       btn.addEventListener("click", () => eliminarSacerdote(btn.dataset.id));
@@ -51,11 +53,16 @@ function abrirModalNuevo() {
   document.getElementById("modalSacerdote").style.display = "flex";
 }
 
-function abrirModalEditar(id, nombre) {
+function abrirModalEditar(id, listaSacerdotes) {
+  const s = listaSacerdotes.find(x => x.id == id);
+  if (!s) return;
+
   sacerdoteEditandoId = id;
   document.getElementById("modalTitulo").textContent = "Editar sacerdote";
   document.getElementById("modalError").textContent = "";
-  document.getElementById("nombre_completo").value = nombre;
+  document.getElementById("nombre_completo").value = s.nombre_completo;
+  document.getElementById("telefono").value = s.telefono || "";
+  document.getElementById("direccion").value = s.direccion || "";
   document.getElementById("modalSacerdote").style.display = "flex";
 }
 
@@ -90,7 +97,11 @@ document.getElementById("btnCancelar").addEventListener("click", cerrarModal);
 document.getElementById("formSacerdote").addEventListener("submit", async function (e) {
   e.preventDefault();
 
-  const nombre_completo = document.getElementById("nombre_completo").value.trim();
+  const datos = {
+    nombre_completo: document.getElementById("nombre_completo").value.trim(),
+    telefono: document.getElementById("telefono").value.trim(),
+    direccion: document.getElementById("direccion").value.trim(),
+  };
   const modalError = document.getElementById("modalError");
   modalError.textContent = "";
 
@@ -105,7 +116,7 @@ document.getElementById("formSacerdote").addEventListener("submit", async functi
         "Content-Type": "application/json",
         "x-usuario-id": sesionActual.id
       },
-      body: JSON.stringify({ nombre_completo })
+      body: JSON.stringify(datos)
     });
 
     const resultado = await respuesta.json();

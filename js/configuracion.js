@@ -78,11 +78,15 @@ async function cargarLibros() {
 
     contenedor.innerHTML = libros.map(l => `
       <div class="fila-form" style="align-items:flex-end;">
-        <div style="flex:2;">
-          <label>${NOMBRES_TIPO_LIBRO[l.tipo]}</label>
+        <div>
+          <label>${NOMBRES_TIPO_LIBRO[l.tipo]} — Libro</label>
           <input type="text" data-tipo="${l.tipo}" class="input-libro" value="${l.libro || ""}">
         </div>
-        <div style="flex:1;">
+        <div>
+          <label>Último número de acta</label>
+          <input type="number" data-tipo="${l.tipo}" class="input-ultimo-acta" value="${l.ultimo_numero_acta || 0}">
+        </div>
+        <div>
           <button type="button" class="btn-secundario btn-guardar-libro" data-tipo="${l.tipo}">Guardar</button>
         </div>
       </div>
@@ -99,14 +103,16 @@ async function cargarLibros() {
 }
 
 async function guardarLibro(tipo) {
-  const input = document.querySelector(`.input-libro[data-tipo="${tipo}"]`);
-  const libro = input.value.trim();
+  const inputLibro = document.querySelector(`.input-libro[data-tipo="${tipo}"]`);
+  const inputActa = document.querySelector(`.input-ultimo-acta[data-tipo="${tipo}"]`);
+  const libro = inputLibro.value.trim();
+  const ultimo_numero_acta = parseInt(inputActa.value, 10) || 0;
 
   try {
     const respuesta = await fetch(`${API_URL}/api/libros/${tipo}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json", "x-usuario-id": sesionActual.id },
-      body: JSON.stringify({ libro })
+      body: JSON.stringify({ libro, ultimo_numero_acta })
     });
     const resultado = await respuesta.json();
 
@@ -114,7 +120,7 @@ async function guardarLibro(tipo) {
       alert(resultado.error || "Error al guardar");
       return;
     }
-    alert(`Libro de ${NOMBRES_TIPO_LIBRO[tipo]} actualizado`);
+    alert(`Configuración de ${NOMBRES_TIPO_LIBRO[tipo]} actualizada`);
   } catch (err) {
     console.error(err);
     alert("No se pudo conectar con el servidor");
