@@ -377,3 +377,12 @@ body.pagina-interna {
     display: none;
   }
 }
+
+.tipo-tab {
+  background: var(--crema-tarjeta);
+}
+.tipo-tab.tipo-activo {
+  background: linear-gradient(180deg, var(--marino), var(--marino-oscuro));
+  color: #f4ead9;
+  border-color: transparent;
+}

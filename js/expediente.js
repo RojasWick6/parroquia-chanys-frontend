@@ -290,3 +290,8 @@ cargarSacramentos();
 if (params.get("nuevo") === "1") {
   setTimeout(abrirModalNuevo, 400);
 }
+
+
+if (params.get("editar")) {
+  setTimeout(() => abrirModalEditar(params.get("editar")), 500);
+}
