@@ -135,8 +135,16 @@ function abrirModalNuevo() {
   document.getElementById("modalTitulo").textContent = "Registrar sacramento";
   document.getElementById("formSacramento").reset();
   document.getElementById("modalError").textContent = "";
+  actualizarCamposSegunTipo();
   document.getElementById("modalSacramento").style.display = "flex";
 }
+
+function actualizarCamposSegunTipo() {
+  const tipo = document.getElementById("tipo").value;
+  document.getElementById("campoBautizante").style.display = tipo === "bautizo" ? "flex" : "none";
+  document.getElementById("campoBautizoPrevio").style.display = tipo === "confirmacion" ? "flex" : "none";
+}
+
 
 async function autocompletarLibroYActa() {
   if (sacramentoEditandoId !== null) return; // solo autocompletar en registros nuevos
@@ -164,6 +172,7 @@ async function autocompletarLibroYActa() {
 }
 
 document.getElementById("tipo").addEventListener("change", autocompletarLibroYActa);
+document.getElementById("tipo").addEventListener("change", actualizarCamposSegunTipo);
 
 async function abrirModalEditar(id) {
   try {
@@ -185,6 +194,10 @@ async function abrirModalEditar(id) {
     document.getElementById("numero_acta").value = s.numero_acta || "";
     document.getElementById("lugar").value = s.lugar || "";
     document.getElementById("observaciones").value = s.observaciones || "";
+    document.getElementById("nombre_bautizante").value = s.nombre_bautizante || "";
+    document.getElementById("lugar_bautizo_previo").value = s.lugar_bautizo_previo || "";
+    document.getElementById("fecha_bautizo_previo").value = s.fecha_bautizo_previo ? s.fecha_bautizo_previo.split("T")[0] : "";
+    actualizarCamposSegunTipo();
 
     const padrino = s.padrinos.find(p => p.tipo_padrino === "padrino");
     const madrina = s.padrinos.find(p => p.tipo_padrino === "madrina");
@@ -224,6 +237,9 @@ document.getElementById("formSacramento").addEventListener("submit", async funct
     numero_acta: document.getElementById("numero_acta").value.trim(),
     lugar: document.getElementById("lugar").value.trim(),
     observaciones: document.getElementById("observaciones").value.trim(),
+    nombre_bautizante: document.getElementById("nombre_bautizante").value.trim(),
+    lugar_bautizo_previo: document.getElementById("lugar_bautizo_previo").value.trim(),
+    fecha_bautizo_previo: document.getElementById("fecha_bautizo_previo").value || null,
     padrinos
   };
 
