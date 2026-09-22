@@ -42,7 +42,8 @@ function renderizarPaginaPersonas() {
   const personasPagina = todasLasPersonas.slice(inicio, inicio + PERSONAS_POR_PAGINA);
 
   tabla.innerHTML = "";
-  personasPagina.forEach((p) => {
+  personasPagina.forEach((p, indice) => {
+    const numeroFila = todasLasPersonas.length - inicio - indice;
     const nombreCompleto = `${p.nombre} ${p.apellido_paterno} ${p.apellido_materno || ""}`.trim();
     const fecha = p.fecha_nacimiento
       ? new Date(p.fecha_nacimiento).toLocaleDateString("es-MX", { timeZone: "UTC" })
@@ -50,6 +51,7 @@ function renderizarPaginaPersonas() {
 
     const fila = document.createElement("tr");
     fila.innerHTML = `
+      <td>${numeroFila}</td>
       <td><a href="expediente.html?id=${p.id}" class="link-nombre">${nombreCompleto}</a></td>
       <td>${fecha}</td>
       <td>${p.curp || "-"}</td>
