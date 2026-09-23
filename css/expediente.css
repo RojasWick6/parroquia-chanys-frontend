@@ -105,3 +105,17 @@
   align-items: center;
   justify-content: space-between !important;
 }
+
+.tabla-datos .btn-boleta {
+  background: #3d6b3d !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 5px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 8px;
+}
+.tabla-datos .btn-boleta:hover {
+  background: #305530 !important;
+}
