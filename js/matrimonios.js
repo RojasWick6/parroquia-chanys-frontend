@@ -1,7 +1,7 @@
 const POR_PAGINA = 10;
-let todasLasBodas = [];
+let todosLosMatrimonios = [];
 let paginaActual = 1;
-let bodaEditandoId = null;
+let matrimonioEditandoId = null;
 let sacerdotesCargados = false;
 
 const esAdmin = sesionActual && sesionActual.rol === "admin";
@@ -13,7 +13,7 @@ const CAMPOS_FORM = [
   "esposo_fecha_nacimiento", "esposo_lugar_nacimiento", "esposo_padre", "esposo_madre",
   "esposa_nombre", "esposa_apellido_paterno", "esposa_apellido_materno",
   "esposa_fecha_nacimiento", "esposa_lugar_nacimiento", "esposa_padre", "esposa_madre",
-  "testigo1", "testigo2", "padrino_velacion", "madrina_velacion",
+  "padrino_velacion", "madrina_velacion",
   "observaciones"
 ];
 
@@ -32,28 +32,28 @@ function nombreCompleto(nombre, paterno, materno) {
 // ---------------------------------------------------------
 // LISTA
 // ---------------------------------------------------------
-async function cargarBodas(busqueda = "") {
+async function cargarMatrimonios(busqueda = "") {
   try {
     const url = busqueda
       ? `${API_URL}/api/matrimonios?busqueda=${encodeURIComponent(busqueda)}`
       : `${API_URL}/api/matrimonios`;
 
     const respuesta = await fetch(url, { headers: { "x-usuario-id": sesionActual.id } });
-    todasLasBodas = await respuesta.json();
+    todosLosMatrimonios = await respuesta.json();
     paginaActual = 1;
     renderizarPagina();
   } catch (err) {
     console.error(err);
-    alert("No se pudo cargar la lista de bodas");
+    alert("No se pudo cargar la lista de matrimonios");
   }
 }
 
 function renderizarPagina() {
-  const tabla = document.getElementById("tablaBodas");
+  const tabla = document.getElementById("tablaMatrimonios");
   const mensajeVacio = document.getElementById("mensajeVacio");
   const paginacion = document.getElementById("paginacion");
 
-  if (!Array.isArray(todasLasBodas) || todasLasBodas.length === 0) {
+  if (!Array.isArray(todosLosMatrimonios) || todosLosMatrimonios.length === 0) {
     tabla.innerHTML = "";
     mensajeVacio.style.display = "block";
     paginacion.style.display = "none";
@@ -61,12 +61,12 @@ function renderizarPagina() {
   }
   mensajeVacio.style.display = "none";
 
-  const totalPaginas = Math.max(1, Math.ceil(todasLasBodas.length / POR_PAGINA));
+  const totalPaginas = Math.max(1, Math.ceil(todosLosMatrimonios.length / POR_PAGINA));
   const inicio = (paginaActual - 1) * POR_PAGINA;
-  const pagina = todasLasBodas.slice(inicio, inicio + POR_PAGINA);
+  const pagina = todosLosMatrimonios.slice(inicio, inicio + POR_PAGINA);
 
   tabla.innerHTML = pagina.map((b, indice) => {
-    const numero = todasLasBodas.length - inicio - indice;
+    const numero = todosLosMatrimonios.length - inicio - indice;
     const esposo = nombreCompleto(b.esposo_nombre, b.esposo_apellido_paterno, b.esposo_apellido_materno);
     const esposa = nombreCompleto(b.esposa_nombre, b.esposa_apellido_paterno, b.esposa_apellido_materno);
     const fecha = b.fecha_matrimonio
@@ -100,7 +100,7 @@ function renderizarPagina() {
     btn.addEventListener("click", () => abrirModalEditar(btn.dataset.id));
   });
   document.querySelectorAll(".btn-eliminar").forEach((btn) => {
-    btn.addEventListener("click", () => eliminarBoda(btn.dataset.id));
+    btn.addEventListener("click", () => eliminarMatrimonio(btn.dataset.id));
   });
 
   document.getElementById("infoPagina").textContent = `Página ${paginaActual} de ${totalPaginas}`;
@@ -113,7 +113,7 @@ document.getElementById("btnAnterior").addEventListener("click", () => {
   if (paginaActual > 1) { paginaActual--; renderizarPagina(); }
 });
 document.getElementById("btnSiguiente").addEventListener("click", () => {
-  const totalPaginas = Math.ceil(todasLasBodas.length / POR_PAGINA);
+  const totalPaginas = Math.ceil(todosLosMatrimonios.length / POR_PAGINA);
   if (paginaActual < totalPaginas) { paginaActual++; renderizarPagina(); }
 });
 
@@ -121,7 +121,7 @@ let temporizador;
 document.getElementById("inputBusqueda").addEventListener("input", function () {
   clearTimeout(temporizador);
   const valor = this.value.trim();
-  temporizador = setTimeout(() => cargarBodas(valor), 400);
+  temporizador = setTimeout(() => cargarMatrimonios(valor), 400);
 });
 
 // ---------------------------------------------------------
@@ -149,15 +149,15 @@ async function cargarSacerdotesDropdown() {
 }
 
 // ---------------------------------------------------------
-// MODAL: NUEVA / EDITAR BODA
+// MODAL: NUEVA / EDITAR MATRIMONIO
 // ---------------------------------------------------------
 async function abrirModalNueva() {
-  bodaEditandoId = null;
-  document.getElementById("modalTitulo").textContent = "Registrar boda";
-  document.getElementById("formBoda").reset();
+  matrimonioEditandoId = null;
+  document.getElementById("modalTitulo").textContent = "Registrar matrimonio";
+  document.getElementById("formMatrimonio").reset();
   document.getElementById("modalError").textContent = "";
   await cargarSacerdotesDropdown();
-  document.getElementById("modalBoda").style.display = "flex";
+  document.getElementById("modalMatrimonio").style.display = "flex";
 
   // Sugerir libro y número de acta
   try {
@@ -180,39 +180,39 @@ async function abrirModalEditar(id) {
     const respuesta = await fetch(`${API_URL}/api/matrimonios/${id}`, {
       headers: { "x-usuario-id": sesionActual.id }
     });
-    const boda = await respuesta.json();
+    const matrimonio = await respuesta.json();
     if (!respuesta.ok) {
-      alert(boda.error || "No se pudo cargar la boda");
+      alert(matrimonio.error || "No se pudo cargar el matrimonio");
       return;
     }
 
-    bodaEditandoId = id;
-    document.getElementById("modalTitulo").textContent = "Editar boda";
+    matrimonioEditandoId = id;
+    document.getElementById("modalTitulo").textContent = "Editar matrimonio";
     document.getElementById("modalError").textContent = "";
 
     CAMPOS_FORM.forEach((campo) => {
       const input = document.getElementById(campo);
-      let valor = boda[campo];
+      let valor = matrimonio[campo];
       if (valor === null || valor === undefined) valor = "";
       if (input.type === "date" && valor) valor = String(valor).split("T")[0];
       input.value = valor;
     });
 
-    document.getElementById("modalBoda").style.display = "flex";
+    document.getElementById("modalMatrimonio").style.display = "flex";
   } catch (err) {
     console.error(err);
-    alert("No se pudo cargar la boda");
+    alert("No se pudo cargar el matrimonio");
   }
 }
 
 function cerrarModal() {
-  document.getElementById("modalBoda").style.display = "none";
+  document.getElementById("modalMatrimonio").style.display = "none";
 }
 
-document.getElementById("btnNuevaBoda").addEventListener("click", abrirModalNueva);
+document.getElementById("btnNuevoMatrimonio").addEventListener("click", abrirModalNueva);
 document.getElementById("btnCancelar").addEventListener("click", cerrarModal);
 
-document.getElementById("formBoda").addEventListener("submit", async function (e) {
+document.getElementById("formMatrimonio").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const datos = {};
@@ -224,9 +224,9 @@ document.getElementById("formBoda").addEventListener("submit", async function (e
   modalError.textContent = "";
 
   try {
-    const esEdicion = bodaEditandoId !== null;
+    const esEdicion = matrimonioEditandoId !== null;
     const url = esEdicion
-      ? `${API_URL}/api/matrimonios/${bodaEditandoId}`
+      ? `${API_URL}/api/matrimonios/${matrimonioEditandoId}`
       : `${API_URL}/api/matrimonios`;
 
     const respuesta = await fetch(url, {
@@ -245,7 +245,7 @@ document.getElementById("formBoda").addEventListener("submit", async function (e
     }
 
     cerrarModal();
-    cargarBodas(document.getElementById("inputBusqueda").value.trim());
+    cargarMatrimonios(document.getElementById("inputBusqueda").value.trim());
   } catch (err) {
     console.error(err);
     modalError.textContent = "No se pudo conectar con el servidor";
@@ -255,8 +255,8 @@ document.getElementById("formBoda").addEventListener("submit", async function (e
 // ---------------------------------------------------------
 // ELIMINAR (solo administrador)
 // ---------------------------------------------------------
-async function eliminarBoda(id) {
-  if (!confirm("¿Eliminar esta boda? Dejará de aparecer en la lista.")) return;
+async function eliminarMatrimonio(id) {
+  if (!confirm("¿Eliminar este matrimonio? Dejará de aparecer en la lista.")) return;
   try {
     const respuesta = await fetch(`${API_URL}/api/matrimonios/${id}`, {
       method: "DELETE",
@@ -267,7 +267,7 @@ async function eliminarBoda(id) {
       alert(resultado.error || "No se pudo eliminar");
       return;
     }
-    cargarBodas(document.getElementById("inputBusqueda").value.trim());
+    cargarMatrimonios(document.getElementById("inputBusqueda").value.trim());
   } catch (err) {
     console.error(err);
     alert("No se pudo conectar con el servidor");
@@ -323,11 +323,11 @@ document.getElementById("formLibro").addEventListener("submit", async function (
       return;
     }
     document.getElementById("modalLibro").style.display = "none";
-    alert("Libro y numeración de bodas actualizados");
+    alert("Libro y numeración de matrimonios actualizados");
   } catch (err) {
     console.error(err);
     libroError.textContent = "No se pudo conectar con el servidor";
   }
 });
 
-cargarBodas();
+cargarMatrimonios();

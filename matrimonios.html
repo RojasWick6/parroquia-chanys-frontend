@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bodas - Sistema Parroquial</title>
+  <title>Matrimonios - Sistema Parroquial</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -46,9 +46,9 @@
           <svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
           Sacramentos
         </a>
-        <a href="bodas.html" class="nav-item nav-activo">
+        <a href="matrimonios.html" class="nav-item nav-activo">
           <svg viewBox="0 0 24 24"><circle cx="9" cy="13" r="5"/><circle cx="15" cy="13" r="5"/><path d="M12 3l1.2 2.2L12 7.4 10.8 5.2z"/></svg>
-          Bodas
+          Matrimonios
         </a>
         <a href="sacerdotes.html" class="nav-item">
           <svg viewBox="0 0 24 24"><path d="M12 2v20M5 8h14"/></svg>
@@ -79,7 +79,7 @@
 
     <div class="app-main">
       <header class="app-topbar">
-        <h1>Bodas</h1>
+        <h1>Matrimonios</h1>
         <div class="topbar-usuario">
           <span id="nombreUsuario"></span>
           <button id="btnLogout">Cerrar sesión</button>
@@ -88,7 +88,7 @@
 
       <main class="app-contenido">
         <div class="encabezado-modulo">
-          <button id="btnNuevaBoda" class="btn-primario">+ Nueva boda</button>
+          <button id="btnNuevoMatrimonio" class="btn-primario">+ Nuevo matrimonio</button>
           <button id="btnLibro" class="btn-secundario" style="display:none;">Libro y numeración</button>
         </div>
 
@@ -108,11 +108,11 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody id="tablaBodas"></tbody>
+            <tbody id="tablaMatrimonios"></tbody>
           </table>
         </div>
 
-        <p id="mensajeVacio" class="mensaje-vacio" style="display:none;">Todavía no hay bodas registradas.</p>
+        <p id="mensajeVacio" class="mensaje-vacio" style="display:none;">Todavía no hay matrimonios registrados.</p>
 
         <div class="paginacion" id="paginacion" style="display:none;">
           <button id="btnAnterior">&larr; Anterior</button>
@@ -123,16 +123,16 @@
     </div>
   </div>
 
-  <!-- MODAL: REGISTRAR / EDITAR BODA -->
-  <div id="modalBoda" class="modal-overlay" style="display:none;">
+  <!-- MODAL: REGISTRAR / EDITAR MATRIMONIO -->
+  <div id="modalMatrimonio" class="modal-overlay" style="display:none;">
     <div class="modal-caja">
-      <h2 id="modalTitulo">Registrar boda</h2>
-      <form id="formBoda">
+      <h2 id="modalTitulo">Registrar matrimonio</h2>
+      <form id="formMatrimonio">
 
-        <h3 class="subtitulo-seccion">Datos de la boda</h3>
+        <h3 class="subtitulo-seccion">Datos del matrimonio</h3>
         <div class="fila-form">
           <div>
-            <label for="fecha_matrimonio">Fecha de la boda</label>
+            <label for="fecha_matrimonio">Fecha del matrimonio</label>
             <input type="date" id="fecha_matrimonio">
           </div>
           <div>
@@ -235,17 +235,7 @@
           </div>
         </div>
 
-        <h3 class="subtitulo-seccion">Testigos y padrinos de velación</h3>
-        <div class="fila-form">
-          <div>
-            <label for="testigo1">Testigo 1</label>
-            <input type="text" id="testigo1">
-          </div>
-          <div>
-            <label for="testigo2">Testigo 2</label>
-            <input type="text" id="testigo2">
-          </div>
-        </div>
+        <h3 class="subtitulo-seccion">Padrinos de velación</h3>
         <div class="fila-form">
           <div>
             <label for="padrino_velacion">Padrino de velación</label>
@@ -273,8 +263,8 @@
   <!-- MODAL: LIBRO Y NUMERACIÓN (solo administrador) -->
   <div id="modalLibro" class="modal-overlay" style="display:none;">
     <div class="modal-caja">
-      <h2>Libro y numeración de bodas</h2>
-      <p class="mensaje-vacio" style="text-align:left;padding:0 0 12px;font-style:normal;">El libro y el siguiente número de acta se sugieren solos al registrar una boda nueva. Si ya tienen actas físicas de bodas, escribe aquí el último número usado y el sistema continuará desde ahí.</p>
+      <h2>Libro y numeración de matrimonios</h2>
+      <p class="mensaje-vacio" style="text-align:left;padding:0 0 12px;font-style:normal;">El libro y el siguiente número de acta se sugieren solos al registrar una matrimonio nueva. Si ya tienen actas físicas de matrimonios, escribe aquí el último número usado y el sistema continuará desde ahí.</p>
       <form id="formLibro">
         <div class="fila-form">
           <div>
@@ -298,6 +288,6 @@
   <script src="js/config.js"></script>
   <script src="js/sesion.js"></script>
   <script src="js/nav-movil.js"></script>
-  <script src="js/bodas.js"></script>
+  <script src="js/matrimonios.js"></script>
 </body>
 </html>
